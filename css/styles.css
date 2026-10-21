@@ -1,0 +1,992 @@
+/* ===== Design tokens ===== */
+:root {
+  --color-bg: #f9fbf3; /* very light pink */
+  --color-bg-gradient: #fbb9cd;
+  --color-bg-alt: #99fafc; /* light pink (mistyrose) */
+  --color-text: #3a2523;
+  --color-muted: #7a5f5c;
+  --color-primary: #fb3a74; /* indigo: buttons, links, headings accents */
+  --color-accent: #5483fc; /* coral pink */
+  --color-border: rgba(255, 255, 255, 0.6); /* soft white: header and footer lines */
+
+  /* Honeycomb colours. Each section's background is a light tint of its
+     button's colour, so changing one value here updates both. */
+  /* Ocean Blush. (Previous Jewel set: #d62e66, #0f8a79, #3d5a80, #7b3fbf) */
+  --color-about: #f48fb1; /* rose */
+  --color-skills: #8fd9a8; /* mint */
+  --color-projects: #4dd0e1; /* aqua */
+  --color-contact: #7986cb; /* lavender */
+  --section-tint: 14%; /* how much colour goes into the section backgrounds */
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius: 12px;
+  --shadow: 0 4px 16px rgba(252, 126, 124, 0.12);
+  --max-width: 1080px;
+  --header-height: 64px;
+}
+
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  min-height: 100vh;
+  /* Same diagonal gradient as the hero, stretched across the whole page */
+  background: linear-gradient(135deg, var(--color-bg-alt), var(--color-bg-gradient));
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+/* ===== Header / navigation ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  /* mostly see-through so the page gradient shows; blur keeps text readable */
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--color-accent);
+}
+
+.site-nav ul {
+  display: flex;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.site-nav a:hover {
+  color: var(--color-primary);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--color-primary);
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.btn-outline {
+  color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: 6rem 0 5rem;
+  /* no background of its own: the page gradient on <body> shows through */
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.hero h1 {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+}
+
+/* ===== Photo with spiral dots ===== */
+.hero-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.avatar {
+  --avatar-size: 150px;
+
+  position: relative;
+  flex-shrink: 0;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  /* room for the spiral, which reaches ~32% beyond the photo edge */
+  margin: calc(var(--avatar-size) * 0.3);
+}
+
+.avatar img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: var(--shadow);
+}
+
+.avatar-dots {
+  position: absolute;
+  inset: 0;
+  animation: spin 40s linear infinite;
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-dots {
+    animation: none;
+  }
+}
+
+.hero-role {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.hero-text {
+  max-width: 560px;
+  color: var(--color-muted);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+/* LinkedIn / GitHub icon buttons in the header */
+.social-links {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: black;
+  transition: background 0.2s, color 0.2s;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+  background: black;
+  color: #fff;
+}
+
+.social-links svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+/* Two columns: basic info on the left, honeycomb menu on the right,
+   top-aligned so the honeycomb sits level with the photo and name */
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 3rem;
+}
+
+@media (max-width: 860px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .honeycomb {
+    justify-self: center;
+  }
+}
+
+/* ===== Honeycomb menu ===== */
+/* Flat-topped hexagons in two staggered columns:
+   1 (top-left), 2 (right, half a hex lower), 3 (below 1), 4 (below 2) */
+.honeycomb {
+  --hex-w: 150px;
+  --hex-h: calc(var(--hex-w) * 0.866); /* height of a regular hexagon */
+  --hex-gap: 8px;
+
+  position: relative;
+  flex-shrink: 0;
+  width: calc(var(--hex-w) * 1.75 + var(--hex-gap));
+  height: calc(var(--hex-h) * 2.5 + var(--hex-gap) * 1.5);
+  margin-top: 3rem; /* sits a little lower than the photo and name */
+}
+
+/* On wide screens there's spare room beside the page, so nudge it further right */
+@media (min-width: 1180px) {
+  .honeycomb {
+    margin-right: -3rem;
+  }
+}
+
+/* Stacked layout (tablets/phones): no extra offset needed */
+@media (max-width: 860px) {
+  .honeycomb {
+    margin-top: 0;
+  }
+}
+
+.hex {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--hex-w);
+  height: var(--hex-h);
+  isolation: isolate; /* keeps the ::before shape behind the label */
+  color: var(--color-text); /* dark labels for the light Ocean Blush colours (was rgb(252, 234, 234) with Jewel) */
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em; /* a little spacing helps capitals read clearly */
+  text-decoration: none;
+  /* Glow in the button's own colour. It lives here, not on the shape,
+     because clip-path would cut it off. */
+  /* Faint version of the button colour for a very light glow */
+  --hex-glow: color-mix(in srgb, var(--hex-bg) 35%, transparent);
+  filter: drop-shadow(0 0 6px var(--hex-glow));
+  animation: hex-glow 3s ease-in-out infinite alternate;
+  /* Glide when buttons switch places. Uses transform (not left/top) so the
+     browser moves each button as its own layer and the glow doesn't leave
+     smudges behind while moving. */
+  left: 0;
+  top: 0;
+  transition: transform 1.5s ease-in-out;
+  will-change: transform;
+  /* Only the hexagon shape (::before) reacts to the mouse, not the
+     empty corners of this rectangle that overlap neighbouring hexagons */
+  pointer-events: none;
+}
+
+/* The hexagon is two stacked shapes (clip-path cuts off normal borders):
+   ::before = full-size back shape, which turns white on hover = the border
+   ::after  = coloured shape, slightly smaller, sitting on top */
+.hex::before,
+.hex::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  background: var(--hex-bg);
+  transition: background 0.2s;
+}
+
+.hex::before {
+  inset: 0;
+  pointer-events: auto; /* only the hexagon shape reacts to the mouse */
+}
+
+.hex::after {
+  inset: 1.5px 1.75px; /* border thickness (a bit more at the sides for the slanted edges) */
+  pointer-events: none;
+}
+
+.hex:hover::before,
+.hex:focus-visible::before {
+  background: #fff;
+}
+
+.hex:hover::after,
+.hex:focus-visible::after {
+  background: var(--hex-bg-hover);
+}
+
+/* Stronger glow on hover / keyboard focus */
+.hex:hover,
+.hex:focus-visible {
+  animation: none;
+  filter: drop-shadow(0 0 10px var(--hex-glow));
+}
+
+/* Gentle "breathing" glow */
+@keyframes hex-glow {
+  from {
+    filter: drop-shadow(0 0 3px var(--hex-glow));
+  }
+  to {
+    filter: drop-shadow(0 0 8px var(--hex-glow));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hex {
+    animation: none;
+  }
+}
+
+/* Each hexagon's colour, plus a lighter shade of it for hover */
+.hex:nth-child(1) {
+  --hex-bg: var(--color-about);
+  --hex-bg-hover: #f6a0bd;
+}
+
+.hex:nth-child(2) {
+  --hex-bg: var(--color-skills);
+  --hex-bg-hover: #a0dfb5;
+}
+
+.hex:nth-child(3) {
+  --hex-bg: var(--color-projects);
+  --hex-bg-hover: #68d7e6;
+}
+
+.hex:nth-child(4) {
+  --hex-bg: var(--color-contact);
+  --hex-bg-hover: #8d98d3;
+  
+}
+
+/* clip-path hides the focus outline, so mark keyboard focus with an underline */
+.hex:focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+
+/* The four honeycomb positions. js/main.js moves each button to the next
+   slot clockwise (1 → 2 → 4 → 3 → 1); colours stay with their button. */
+.hex[data-slot="1"] {
+  transform: translate(0, 0);
+}
+
+.hex[data-slot="2"] {
+  transform: translate(
+    calc(var(--hex-w) * 0.75 + var(--hex-gap)),
+    calc(var(--hex-h) * 0.5 + var(--hex-gap) * 0.5)
+  );
+}
+
+.hex[data-slot="3"] {
+  transform: translate(0, calc(var(--hex-h) + var(--hex-gap)));
+}
+
+.hex[data-slot="4"] {
+  transform: translate(
+    calc(var(--hex-w) * 0.75 + var(--hex-gap)),
+    calc(var(--hex-h) * 1.5 + var(--hex-gap) * 1.5)
+  );
+}
+
+/* The honeycomb button for the panel currently shown in the card */
+.hex.active {
+  animation: none;
+  filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 12px var(--hex-bg));
+}
+
+/* ===== Floating card (shows the selected honeycomb panel) ===== */
+.showcase {
+  position: relative;
+  z-index: 2;
+  margin-top: -3rem; /* overlaps the bottom of the hero so it looks like it floats */
+  padding-bottom: 4rem;
+}
+
+/* Card colour follows the active panel: a light tint of its button colour */
+.showcase-card {
+  --panel-color: var(--color-about);
+
+  padding: 2.5rem;
+  border-top: 6px solid var(--panel-color);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--panel-color) var(--section-tint), white);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.showcase-card[data-active="skills"] {
+  --panel-color: var(--color-skills);
+}
+
+.showcase-card[data-active="projects"] {
+  --panel-color: var(--color-projects);
+}
+
+.showcase-card[data-active="contact"] {
+  --panel-color: var(--color-contact);
+}
+
+.panel {
+  animation: panel-in 0.35s ease-out;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+  /* Matches the active honeycomb button (set on .showcase-card);
+     falls back to the accent colour outside the card */
+  background: var(--panel-color, var(--color-accent));
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* ===== Cards (skills + projects) ===== */
+.skills-grid,
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Frosted white cards: let the page/card colours show through softly.
+   --card-accent tints the shadow and the hover border. */
+.skill-card,
+.project-card {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--card-accent) 10%, transparent);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.skill-card:hover,
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-accent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--card-accent) 18%, transparent);
+}
+
+.skill-card {
+  --card-accent: var(--color-skills);
+}
+
+.project-card {
+  --card-accent: var(--color-projects);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card p {
+  color: var(--color-muted);
+  flex-grow: 1;
+}
+
+/* ===== Project screenshots ===== */
+/* Cover image across the top of the card (bleeds to the card edges) */
+.project-cover {
+  position: relative;
+  display: block;
+  width: calc(100% + 3rem);
+  aspect-ratio: 16 / 10;
+  margin: -1.5rem -1.5rem 1rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--card-accent) 18%, white);
+  cursor: zoom-in;
+}
+
+.project-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top; /* show the top of the page, where the header is */
+  transition: transform 0.3s;
+}
+
+.project-cover:hover img {
+  transform: scale(1.04);
+}
+
+.project-cover:focus-visible {
+  outline: 3px solid var(--card-accent);
+  outline-offset: -3px;
+}
+
+/* Mobile projects: three phone screens side by side on a soft gradient */
+.project-cover.is-mobile {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--card-accent) 30%, white),
+    color-mix(in srgb, var(--card-accent) 8%, white)
+  );
+}
+
+.cover-phones {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6%;
+  height: 100%;
+  padding-top: 8%;
+}
+
+.cover-phones img {
+  width: 26%;
+  height: 86%;
+  object-fit: cover;
+  object-position: top;
+  border: 3px solid #fff;
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Middle phone slightly taller, for a little depth */
+.cover-phones img:nth-child(2) {
+  height: 100%;
+}
+
+.project-cover.is-mobile:hover img {
+  transform: translateY(-4px);
+}
+
+.cover-badge {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Until screenshots are added: initials on a soft gradient */
+.project-cover.is-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  cursor: default;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--card-accent) 30%, white),
+    color-mix(in srgb, var(--card-accent) 8%, white)
+  );
+  color: color-mix(in srgb, var(--card-accent) 55%, black);
+}
+
+.project-cover.is-placeholder span {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.project-cover.is-placeholder small {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* "Code" and "Live demo" buttons */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.project-link {
+  --link-color: color-mix(in srgb, var(--card-accent) 55%, black);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  border: 1.5px solid var(--link-color);
+  border-radius: 999px;
+  color: var(--link-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.project-link:hover {
+  background: var(--link-color);
+  color: #fff;
+}
+
+.project-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* ===== Screenshot viewer (lightbox) ===== */
+.lightbox {
+  width: min(1100px, 94vw);
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: #15121a;
+  color: #fff;
+}
+
+.lightbox::backdrop {
+  background: rgba(20, 15, 30, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+/* Stop the page behind from scrolling while the viewer is open */
+body:has(.lightbox[open]) {
+  overflow: hidden;
+}
+
+.lightbox-inner {
+  position: relative;
+}
+
+.lightbox figure {
+  margin: 0;
+}
+
+/* Fixed 16:10 frame so the viewer doesn't jump in size while an image
+   loads; screenshots of other shapes are fitted inside it */
+.lightbox-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: calc(90vh - 4rem);
+  object-fit: contain;
+  background: #000;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Mobile projects: a narrow, tall frame that fits phone screenshots */
+.lightbox.is-mobile {
+  width: min(440px, 94vw);
+}
+
+.lightbox.is-mobile .lightbox-image {
+  aspect-ratio: 9 / 19.5;
+}
+
+.lightbox figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+.lightbox-caption,
+.lightbox-counter {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lightbox-counter {
+  white-space: nowrap;
+}
+
+.lightbox-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0 0 4px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #222;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-btn:hover,
+.lightbox-btn:focus-visible {
+  background: #fff;
+}
+
+/* display: flex above would otherwise override the hidden attribute
+   (prev/next are hidden when a project has only one screenshot) */
+.lightbox-btn[hidden] {
+  display: none;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: calc(50% - 2rem);
+  transform: translateY(-50%);
+}
+
+.lightbox-prev {
+  left: 0.75rem;
+}
+
+.lightbox-next {
+  right: 0.75rem;
+}
+
+.lightbox-close {
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 38px;
+  height: 38px;
+  font-size: 1.5rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Tags take their card's accent colour: a pale tint behind,
+   a dark shade of the same colour for readable text */
+.tag-list li {
+  --tag-color: var(--card-accent, var(--color-primary));
+
+  padding: 0.2rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tag-color) 25%, transparent);
+  background: color-mix(in srgb, var(--tag-color) 14%, white);
+  color: color-mix(in srgb, var(--tag-color) 60%, black);
+}
+
+/* ===== Contact ===== */
+.contact {
+  text-align: center;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.contact .section-title::after {
+  margin-inline: auto;
+}
+
+.contact-email {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ===== Back to top ===== */
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.back-to-top:hover {
+  background: var(--color-accent);
+  color: var(--color-text); /* dark arrow stays readable on coral */
+}
+
+/* ===== Simple page (about.html) ===== */
+.page {
+  padding: 4rem 0;
+  max-width: 760px;
+}
+
+.logo {
+  white-space: nowrap;
+}
+
+/* Photo beside the heading and intro; stacks above them on narrow screens */
+.about-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.about-intro > div {
+  flex: 1 1 320px;
+}
+
+/* "About me" heading: primary pink (#fb3a74), same as the buttons and links */
+.about-intro h1 {
+  color: var(--color-primary);
+}
+
+.about-photo {
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: var(--shadow);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+  .avatar {
+    --avatar-size: 110px;
+  }
+
+  .honeycomb {
+    --hex-w: 120px;
+  }
+
+  .hero {
+    padding: 4rem 0 3rem;
+  }
+
+  .showcase {
+    margin-top: -1.5rem;
+  }
+
+  .showcase-card {
+    padding: 1.5rem;
+  }
+}

@@ -63,14 +63,14 @@ const projects = [
   {
     title: "Art Gallery",
     description:
-      "Responsive art gallery app built on an art API: a daily Art of the Day spotlight, a gallery of framed paintings with hover details, artwork pages with a colour palette and comments, and a favourites collection.",
+      "Desktop art gallery app built on an art API (mobile layout in progress): a daily Art of the Day spotlight, a gallery of framed paintings with hover details, artwork pages with a colour palette and comments, and a favourites collection.",
     tags: ["Next.js", "React", "styled-components", "REST API"],
     images: [
       { src: "art-gallery-1.jpg", caption: "Explore the gallery: hover a painting for details" },
       { src: "art-gallery-2.jpg", caption: "Artwork page with artist, genre, year and colour palette" },
       { src: "art-gallery-3.jpg", caption: "Leave and read comments on an artwork" },
       { src: "art-gallery-4.jpg", caption: "Your favourite artworks" },
-      { src: "art-gallery-5.jpg", caption: "Art of the Day on a phone" },
+      { src: "art-gallery-5.jpg", caption: "Art of the Day on a phone (mobile layout in progress)" },
     ],
     repo: "https://github.com/Koodali-Sushma/art-gallery",
     demo: "https://art-gallery-studio.vercel.app",

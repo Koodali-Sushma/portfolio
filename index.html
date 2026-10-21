@@ -77,13 +77,17 @@
           </p>
           <div class="hero-actions">
             <a href="#projects" class="btn btn-primary">View my work</a>
-            <a
-              href="assets/documents/SushmaKoodali_EN.pdf"
-              class="btn btn-outline"
-              target="_blank"
-              rel="noopener"
-              >Download resume</a
-            >
+            <!-- One button that opens a language menu (<details> works without JS).
+                 Each option opens the CV preview page, which has the download. -->
+            <details class="cv-menu">
+              <summary class="btn btn-outline">Resume</summary>
+              <div class="cv-menu-list">
+                <a href="cv.html?lang=en">English <small>CV</small></a>
+                <a href="cv.html?lang=de" hreflang="de" lang="de"
+                  >Deutsch <small>Lebenslauf</small></a
+                >
+              </div>
+            </details>
           </div>
           </div>
 

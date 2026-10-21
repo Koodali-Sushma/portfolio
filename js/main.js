@@ -252,7 +252,29 @@ function setupShowcase() {
   show(panelIds.includes(fromUrl) ? fromUrl : "about", { updateUrl: false });
 }
 
+// Resume menu: close it when clicking elsewhere, pressing Esc, or picking a language
+function setupCvMenu() {
+  const menu = document.querySelector(".cv-menu");
+  if (!menu) return;
+
+  document.addEventListener("click", (event) => {
+    if (menu.open && !menu.contains(event.target)) menu.open = false;
+  });
+
+  menu.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menu.open) {
+      menu.open = false;
+      menu.querySelector("summary").focus();
+    }
+  });
+
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => (menu.open = false));
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupCvMenu();
   setupShowcase();
   setupHoneycombRotation();
   drawSpiralDots(document.querySelector(".avatar-dots"));

@@ -275,6 +275,69 @@ h3 {
   fill: currentColor;
 }
 
+/* ===== Resume download menu ===== */
+.cv-menu {
+  position: relative;
+}
+
+.cv-menu summary {
+  list-style: none; /* hide the default ▸ marker */
+  cursor: pointer;
+  user-select: none;
+}
+
+.cv-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.cv-menu summary::after {
+  content: "▾";
+  display: inline-block;
+  margin-left: 0.4rem;
+  transition: transform 0.2s;
+}
+
+.cv-menu[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.cv-menu-list {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 5; /* above the floating card */
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  padding: 0.4rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.cv-menu-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cv-menu-list a:hover,
+.cv-menu-list a:focus-visible {
+  background: color-mix(in srgb, var(--color-primary) 10%, white);
+  color: var(--color-primary);
+}
+
+.cv-menu-list small {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
 /* Two columns: basic info on the left, honeycomb menu on the right,
    top-aligned so the honeycomb sits level with the photo and name */
 .hero-inner {
@@ -928,6 +991,73 @@ body:has(.lightbox[open]) {
 .back-to-top:hover {
   background: var(--color-accent);
   color: var(--color-text); /* dark arrow stays readable on coral */
+}
+
+/* ===== CV preview page (cv.html) ===== */
+.cv-page {
+  max-width: 960px;
+  padding-block: 2.5rem 4rem;
+}
+
+.cv-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.cv-title {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+}
+
+/* English | Deutsch switch */
+.cv-lang {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.cv-lang a {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cv-lang a[aria-current="page"] {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.cv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+/* The CV shown like a sheet of paper */
+.cv-preview {
+  margin: 0;
+}
+
+.cv-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 600px) {
+  .cv-actions {
+    margin-left: 0;
+  }
 }
 
 /* ===== Simple page (about.html) ===== */

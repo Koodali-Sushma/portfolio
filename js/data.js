@@ -80,4 +80,16 @@ const projects = [
     repo: "https://github.com/Koodali-Sushma/rick-and-morty-app",
     demo: "https://koodali-sushma.github.io/rick-and-morty-app/",
   },
+  {
+    title: "Portfolio Website (this site)",
+    description:
+      "Built to explore Claude and get hands-on experience developing a website with AI, writing very little code by hand. I described each design and change in plain language (starting from a hand-drawn sketch), reviewed what Claude Code built, and refined it step by step: honeycomb menu, floating panels and a screenshot gallery in vanilla JavaScript.",
+    tags: ["JavaScript", "HTML", "CSS", "Claude Code", "AI-assisted development"],
+    images: [
+      { src: "portfolio-1.jpg", caption: "Homepage: photo, honeycomb menu and the About panel" },
+      { src: "portfolio-2.jpg", caption: "Projects panel with screenshot covers and links" },
+    ],
+    repo: "https://github.com/Koodali-Sushma/portfolio",
+    demo: "https://sushma-koodali.vercel.app",
+  },
 ];

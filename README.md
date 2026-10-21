@@ -1,5 +1,7 @@
 # Hi there, I'm Sushma Koodali! 👋
 
+🌐 **Portfolio:** [sushma-koodali.vercel.app](https://sushma-koodali.vercel.app)
+
 I'm a **Junior Frontend Developer** based in Germany, with a **Master of Computer Applications (MCA)** and hands-on training in modern **Web Development with AI** (neuefische, Berlin, 2026). I'm passionate about creating user-friendly web applications as part of a collaborative team.
 
 ---
@@ -56,6 +58,7 @@ A Frontend Developer role in a collaborative team where I can build user-friendl
 - 📧 Email: sushma.gargya@outlook.com
 - 💼 LinkedIn: [sushma-koodali-14466814b](https://www.linkedin.com/in/sushma-koodali-14466814b)
 - 🐙 GitHub: [Koodali-Sushma](https://github.com/Koodali-Sushma)
+- 🌐 Portfolio: [sushma-koodali.vercel.app](https://sushma-koodali.vercel.app)
 - 📍 Location: Germany
 
 ---

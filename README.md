@@ -1,8 +1,8 @@
-# Hi there, I'm Sushma Koodali! 👋
+# Hi there, I am Sushma Koodali! 👋
 
 🌐 **Portfolio:** [sushma-koodali.vercel.app](https://sushma-koodali.vercel.app)
 
-I'm a **Junior Frontend Developer** based in Germany, with a **Master of Computer Applications (MCA)** and hands-on training in modern **Web Development with AI** (neuefische, Berlin, 2026). I'm passionate about creating user-friendly web applications as part of a collaborative team.
+I am a **Frontend Developer** based in Germany, with a **Master of Computer Applications (MCA)** and hands-on training in modern **Web Development with AI** (neuefische, Berlin, 2026). I am passionate about creating user-friendly web applications as part of a collaborative team.
 
 ---
 
@@ -49,7 +49,7 @@ I'm a **Junior Frontend Developer** based in Germany, with a **Master of Compute
 
 ---
 
-### 🎯 What I'm Looking For
+### 🎯 What I Am Looking For
 
 A Frontend Developer role in a collaborative team where I can build user-friendly web applications and keep growing.
 

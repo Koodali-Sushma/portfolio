@@ -36,7 +36,7 @@ I'm a **Junior Frontend Developer** based in Germany, with a **Master of Compute
 ### 🎓 Education & Courses
 
 - Web Development Course with AI, neuefische GmbH, Berlin (2026)
-- German Language Course B1, Adult Education Center, Germany (2025)
+- German Language Course B1, Volkshochschule, Germany (2025)
 - Core Java Bootcamp, Uttara Info Solutions, Bangalore (2019)
 - Master of Computer Applications (MCA), BMS College of Engineering, Bangalore (2015–2018)
 

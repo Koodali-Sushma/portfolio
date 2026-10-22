@@ -1,14 +1,45 @@
 // Entry point: renders data from js/data.js and wires up page interactions.
 
+// Current site language ("en" or "de"), managed by js/i18n.js
+const currentLang = () => (window.siteLang ? window.siteLang.get() : "en");
+
+// Text in js/data.js is a plain string or { en: "…", de: "…" }
+function tr(text) {
+  return text && typeof text === "object" ? text[currentLang()] || text.en : text;
+}
+
+// Interface text used on the project cards and in the screenshot viewer
+const UI_TEXT = {
+  en: {
+    comingSoon: "Screenshots coming soon",
+    count: (n) => `${n} screenshot${n > 1 ? "s" : ""}`,
+    view: (n, title) => `View ${n} screenshot${n > 1 ? "s" : ""} of ${title}`,
+    code: "Code",
+    demo: "Live demo ↗",
+    screenshot: "screenshot",
+  },
+  de: {
+    comingSoon: "Screenshots folgen in Kürze",
+    count: (n) => `${n} Screenshot${n > 1 ? "s" : ""}`,
+    view: (n, title) => `${n} Screenshot${n > 1 ? "s" : ""} von ${title} ansehen`,
+    code: "Code",
+    demo: "Live-Demo ↗",
+    screenshot: "Screenshot",
+  },
+};
+const ui = () => UI_TEXT[currentLang()];
+
+function tagList(items) {
+  return `<ul class="tag-list">${items.map((item) => `<li>${tr(item)}</li>`).join("")}</ul>`;
+}
+
 function renderSkills(container, skillGroups) {
   container.innerHTML = skillGroups
     .map(
       (group) => `
         <div class="skill-card">
-          <h3>${group.category}</h3>
-          <ul class="tag-list">
-            ${group.items.map((item) => `<li>${item}</li>`).join("")}
-          </ul>
+          <h3>${tr(group.category)}</h3>
+          ${tagList(group.items)}
         </div>`
     )
     .join("");
@@ -21,7 +52,7 @@ function getProjectImages(project) {
   return (project.images || []).map((image) => {
     const { src, caption = "" } = typeof image === "string" ? { src: image } : image;
     // Plain file names live in the projects folder; full paths/URLs are used as-is
-    return { src: src.includes("/") ? src : PROJECT_IMAGE_DIR + src, caption };
+    return { src: src.includes("/") ? src : PROJECT_IMAGE_DIR + src, caption: tr(caption) };
   });
 }
 
@@ -41,8 +72,8 @@ function projectCover(project, index) {
   if (images.length === 0) {
     return `
       <div class="project-cover is-placeholder" aria-hidden="true">
-        <span>${initials(project.title)}</span>
-        <small>Screenshots coming soon</small>
+        <span>${initials(tr(project.title))}</span>
+        <small>${ui().comingSoon}</small>
       </div>`;
   }
 
@@ -61,10 +92,10 @@ function projectCover(project, index) {
     <button
       class="project-cover${mobile ? " is-mobile" : ""}"
       data-project="${index}"
-      aria-label="View ${count} screenshot${count > 1 ? "s" : ""} of ${project.title}"
+      aria-label="${ui().view(count, tr(project.title))}"
     >
       ${preview}
-      ${count > 1 ? `<span class="cover-badge">${count} screenshots</span>` : ""}
+      ${count > 1 ? `<span class="cover-badge">${ui().count(count)}</span>` : ""}
     </button>`;
 }
 
@@ -74,12 +105,12 @@ function projectLinks(project) {
   const links = [];
   if (project.repo) {
     links.push(
-      `<a class="project-link" href="${project.repo}" target="_blank" rel="noopener">${GITHUB_ICON}Code</a>`
+      `<a class="project-link" href="${project.repo}" target="_blank" rel="noopener">${GITHUB_ICON}${ui().code}</a>`
     );
   }
   if (project.demo) {
     links.push(
-      `<a class="project-link" href="${project.demo}" target="_blank" rel="noopener">Live demo ↗</a>`
+      `<a class="project-link" href="${project.demo}" target="_blank" rel="noopener">${ui().demo}</a>`
     );
   }
   return links.length ? `<div class="project-links">${links.join("")}</div>` : "";
@@ -91,11 +122,9 @@ function renderProjects(container, projectList) {
       (project, index) => `
         <article class="project-card">
           ${projectCover(project, index)}
-          <h3>${project.title}</h3>
-          <p>${project.description}</p>
-          <ul class="tag-list">
-            ${project.tags.map((tag) => `<li>${tag}</li>`).join("")}
-          </ul>
+          <h3>${tr(project.title)}</h3>
+          <p>${tr(project.description)}</p>
+          ${tagList(project.tags)}
           ${projectLinks(project)}
         </article>`
     )
@@ -119,7 +148,7 @@ function setupLightbox(projectList) {
   const render = () => {
     const shot = images[current];
     image.src = shot.src;
-    image.alt = `${projectTitle}, screenshot ${current + 1}${shot.caption ? `: ${shot.caption}` : ""}`;
+    image.alt = `${projectTitle}, ${ui().screenshot} ${current + 1}${shot.caption ? `: ${shot.caption}` : ""}`;
     title.textContent = projectTitle;
     caption.textContent = shot.caption;
     counter.textContent = `${current + 1} / ${images.length}`;
@@ -136,7 +165,7 @@ function setupLightbox(projectList) {
     if (!cover) return;
     const project = projectList[cover.dataset.project];
     images = getProjectImages(project);
-    projectTitle = project.title;
+    projectTitle = tr(project.title);
     current = 0;
     dialog.classList.toggle("is-mobile", project.device === "mobile"); // tall phone frame
     render();
@@ -282,5 +311,11 @@ document.addEventListener("DOMContentLoaded", () => {
   renderSkills(document.getElementById("skills-list"), skills);
   renderProjects(document.getElementById("projects-list"), projects);
   setupLightbox(projects);
+
+  // EN | DE toggle: redraw the cards built from js/data.js in the new language
+  document.addEventListener("langchange", () => {
+    renderSkills(document.getElementById("skills-list"), skills);
+    renderProjects(document.getElementById("projects-list"), projects);
+  });
   document.getElementById("year").textContent = new Date().getFullYear();
 });

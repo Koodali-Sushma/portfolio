@@ -1,9 +1,8 @@
-// CV preview page (cv.html). English is in the HTML; cv.html?lang=de
-// switches the preview, the download links and the page's own text to German.
+// CV preview page (cv.html): shows the English or German CV to match the site
+// language (js/i18n.js), and switches when the EN | DE toggle is used.
 
 const CV_VERSIONS = {
   en: {
-    htmlLang: "en",
     pageTitle: "CV | Sushma Koodali",
     title: "CV · English",
     pdf: "assets/documents/SushmaKoodali_EN.pdf",
@@ -14,7 +13,6 @@ const CV_VERSIONS = {
     open: "Open in new tab ↗",
   },
   de: {
-    htmlLang: "de",
     pageTitle: "Lebenslauf | Sushma Koodali",
     title: "Lebenslauf · Deutsch",
     pdf: "assets/documents/SushmaKoodali_DE.pdf",
@@ -26,11 +24,9 @@ const CV_VERSIONS = {
   },
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const lang = new URLSearchParams(location.search).get("lang") === "de" ? "de" : "en";
+function showCv(lang) {
   const cv = CV_VERSIONS[lang];
 
-  document.documentElement.lang = cv.htmlLang;
   document.title = cv.pageTitle;
   document.querySelector(".cv-title").textContent = cv.title;
 
@@ -47,8 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
   preview.src = cv.preview;
   preview.alt = cv.previewAlt;
 
-  document.querySelectorAll(".cv-lang a").forEach((link) => {
-    if (link.dataset.lang === lang) link.setAttribute("aria-current", "page");
-    else link.removeAttribute("aria-current");
-  });
+  // Keep the address shareable: it always names the CV being shown
+  history.replaceState(null, "", `cv.html?lang=${lang}`);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  showCv(siteLang.get());
+  document.addEventListener("langchange", (event) => showCv(event.detail.lang));
 });

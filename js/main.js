@@ -13,6 +13,7 @@ const UI_TEXT = {
   en: {
     comingSoon: "Screenshots coming soon",
     count: (n) => `${n} screenshot${n > 1 ? "s" : ""}`,
+    countWithVideo: (n) => `${n} screenshot${n > 1 ? "s" : ""} + ▶ video`,
     view: (n, title) => `View ${n} screenshot${n > 1 ? "s" : ""} of ${title}`,
     code: "Code",
     demo: "Live demo ↗",
@@ -21,6 +22,7 @@ const UI_TEXT = {
   de: {
     comingSoon: "Screenshots folgen in Kürze",
     count: (n) => `${n} Screenshot${n > 1 ? "s" : ""}`,
+    countWithVideo: (n) => `${n} Screenshot${n > 1 ? "s" : ""} + ▶ Video`,
     view: (n, title) => `${n} Screenshot${n > 1 ? "s" : ""} von ${title} ansehen`,
     code: "Code",
     demo: "Live-Demo ↗",
@@ -47,12 +49,23 @@ function renderSkills(container, skillGroups) {
 
 const PROJECT_IMAGE_DIR = "assets/images/projects/";
 
-// Screenshots can be listed as "file.webp" or { src: "file.webp", caption: "…" }
+// Plain file names live in the projects folder; full paths/URLs are used as-is
+const projectFile = (file) => (file.includes("/") ? file : PROJECT_IMAGE_DIR + file);
+
+// Screenshots can be listed as "file.webp" or { src: "file.webp", caption: "…" };
+// a video as { src: "demo.mp4", poster: "demo-poster.jpg", caption: "…" }
 function getProjectImages(project) {
   return (project.images || []).map((image) => {
-    const { src, caption = "" } = typeof image === "string" ? { src: image } : image;
-    // Plain file names live in the projects folder; full paths/URLs are used as-is
-    return { src: src.includes("/") ? src : PROJECT_IMAGE_DIR + src, caption: tr(caption) };
+    const { src, caption = "", poster } = typeof image === "string" ? { src: image } : image;
+    const isVideo = /\.(mp4|webm)$/i.test(src);
+    return {
+      src: projectFile(src),
+      caption: tr(caption),
+      isVideo,
+      poster: poster ? projectFile(poster) : "",
+      // still image to show on the card cover
+      thumb: isVideo && poster ? projectFile(poster) : projectFile(src),
+    };
   });
 }
 
@@ -79,14 +92,22 @@ function projectCover(project, index) {
 
   const count = images.length;
   const mobile = project.device === "mobile";
+  // Optional "cover" in js/data.js picks the cover image; otherwise the first
+  const coverImage =
+    (project.cover && images.find((image) => image.src.endsWith("/" + project.cover))) || images[0];
   // Phone screenshots: show up to three screens side by side.
   // Desktop screenshots: the first one fills the cover.
   const preview = mobile
     ? `<span class="cover-phones">${images
         .slice(0, 3)
-        .map((image) => `<img src="${image.src}" alt="" loading="lazy" />`)
+        .map((image) => `<img src="${image.thumb}" alt="" loading="lazy" />`)
         .join("")}</span>`
-    : `<img src="${images[0].src}" alt="" loading="lazy" />`;
+    : `<img src="${coverImage.thumb}" alt="" loading="lazy" />`;
+
+  // Badge: "13 screenshots", or "12 screenshots + video" when there is a video
+  const videos = images.filter((image) => image.isVideo).length;
+  const shots = count - videos;
+  const badge = videos ? ui().countWithVideo(shots) : count > 1 ? ui().count(count) : "";
 
   return `
     <button
@@ -95,7 +116,7 @@ function projectCover(project, index) {
       aria-label="${ui().view(count, tr(project.title))}"
     >
       ${preview}
-      ${count > 1 ? `<span class="cover-badge">${ui().count(count)}</span>` : ""}
+      ${badge ? `<span class="cover-badge">${badge}</span>` : ""}
     </button>`;
 }
 
@@ -136,6 +157,7 @@ function renderProjects(container, projectList) {
 function setupLightbox(projectList) {
   const dialog = document.getElementById("lightbox");
   const image = dialog.querySelector(".lightbox-image");
+  const video = dialog.querySelector(".lightbox-video");
   const title = dialog.querySelector(".lightbox-title");
   const caption = dialog.querySelector(".lightbox-caption");
   const counter = dialog.querySelector(".lightbox-counter");
@@ -147,8 +169,24 @@ function setupLightbox(projectList) {
 
   const render = () => {
     const shot = images[current];
-    image.src = shot.src;
-    image.alt = `${projectTitle}, ${ui().screenshot} ${current + 1}${shot.caption ? `: ${shot.caption}` : ""}`;
+    const label = `${projectTitle}, ${current + 1}${shot.caption ? `: ${shot.caption}` : ""}`;
+
+    // Show either the <img> or the <video> for this slide
+    image.hidden = shot.isVideo;
+    video.hidden = !shot.isVideo;
+    video.pause();
+    if (shot.isVideo) {
+      video.poster = shot.poster;
+      video.src = shot.src;
+      video.setAttribute("aria-label", label);
+      // The demo has no sound, so it can start playing on its own (muted)
+      video.play().catch(() => {});
+    } else {
+      video.removeAttribute("src");
+      video.load(); // stops any download of the video
+      image.src = shot.src;
+      image.alt = `${projectTitle}, ${ui().screenshot} ${current + 1}${shot.caption ? `: ${shot.caption}` : ""}`;
+    }
     title.textContent = projectTitle;
     caption.textContent = shot.caption;
     counter.textContent = `${current + 1} / ${images.length}`;
@@ -186,6 +224,9 @@ function setupLightbox(projectList) {
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });
+
+  // Stop the video whenever the viewer closes (×, Esc or outside click)
+  dialog.addEventListener("close", () => video.pause());
 }
 
 // Show the back-to-top button once the honeycomb menu has scrolled out of view

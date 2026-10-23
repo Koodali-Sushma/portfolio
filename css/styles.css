@@ -865,7 +865,8 @@ body:has(.lightbox[open]) {
 
 /* Fixed 16:10 frame so the viewer doesn't jump in size while an image
    loads; screenshots of other shapes are fitted inside it */
-.lightbox-image {
+.lightbox-image,
+.lightbox-video {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -873,6 +874,12 @@ body:has(.lightbox[open]) {
   object-fit: contain;
   background: #000;
   border-radius: 16px 16px 0 0;
+}
+
+/* display: block above would otherwise override the hidden attribute */
+.lightbox-image[hidden],
+.lightbox-video[hidden] {
+  display: none;
 }
 
 /* Mobile projects: a narrow, tall frame that fits phone screenshots */
@@ -917,6 +924,8 @@ body:has(.lightbox[open]) {
   font-size: 1.8rem;
   line-height: 1;
   cursor: pointer;
+  /* shadow keeps the buttons visible on white screenshots too */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   transition: background 0.2s;
 }
 

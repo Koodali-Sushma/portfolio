@@ -31,8 +31,12 @@ const skills = [
 //   images: screenshot file names in assets/images/projects/, first one is
 //           the cover. Plain names, or { src, caption } to add a caption:
 //           ["plant-buddy-1.webp", { src: "plant-buddy-2.webp", caption: "Edit a plant" }]
+//           A video (.mp4) can be listed too, with a still image as poster:
+//           { src: "demo.mp4", poster: "demo-poster.jpg", caption: "…" }
 //   repo:   GitHub repository URL (shows a "Code" button)
 //   demo:   live site URL (shows a "Live demo" button)
+//   cover:  optional file name from images to use as the card cover
+//           (default: the first image); the viewer order doesn't change
 //   device: "mobile" for phone screenshots: the cover shows three phone
 //           screens side by side and the viewer opens in a tall frame
 const projects = [
@@ -43,7 +47,115 @@ const projects = [
       de: "Laborverwaltungssystem für ein F&E-Labor mit Nachfüll-Benachrichtigungen, Zugriffsfreigaben, einem Chemikalien-Dispenser-Simulator für Echtzeitdaten und automatischen E-Mail-Benachrichtigungen für Bestellungen.",
     },
     tags: ["TypeScript", "Next.js", "Tailwind CSS", "MongoDB"],
-    images: [], // screenshot files in assets/images/projects/
+    cover: "chemical-tracking-13.jpg", // the simulator in light mode; the viewer still starts at slide 1
+    images: [
+      {
+        src: "chemical-tracking-01.jpg",
+        caption: {
+          en: "Stocks: main and node stock for every chemical, low levels in red",
+          de: "Bestände: Haupt- und Knotenbestand jeder Chemikalie, niedrige Werte in Rot",
+        },
+      },
+      {
+        src: "chemical-tracking-02.jpg",
+        caption: {
+          en: "Lab Technician: refill and reorder notifications",
+          de: "Labortechniker: Benachrichtigungen zum Nachfüllen und Nachbestellen",
+        },
+      },
+      {
+        src: "chemical-tracking-03.jpg",
+        caption: {
+          en: "Lab Technician: order low-stock chemicals from suppliers",
+          de: "Labortechniker: Chemikalien mit niedrigem Bestand beim Lieferanten bestellen",
+        },
+      },
+      {
+        src: "chemical-tracking-04.jpg",
+        caption: {
+          en: "Lab Technician: receive approved deliveries",
+          de: "Labortechniker: genehmigte Lieferungen entgegennehmen",
+        },
+      },
+      {
+        src: "chemical-tracking-05.jpg",
+        caption: {
+          en: "Lab Technician: refill a low node in the simulator",
+          de: "Labortechniker: einen niedrigen Knoten im Simulator nachfüllen",
+        },
+      },
+      {
+        src: "chemical-tracking-06.jpg",
+        caption: {
+          en: "Scientist: usage report of dispensed chemicals",
+          de: "Wissenschaftler: Verbrauchsbericht der entnommenen Chemikalien",
+        },
+      },
+      {
+        src: "chemical-tracking-07.jpg",
+        caption: {
+          en: "Scientist: request access to a chemical",
+          de: "Wissenschaftler: Zugriff auf eine Chemikalie beantragen",
+        },
+      },
+      {
+        src: "chemical-tracking-08.jpg",
+        caption: {
+          en: "Admin: access requests list – approve, revoke or reject",
+          de: "Admin: Liste der Zugriffsanfragen – genehmigen, widerrufen oder ablehnen",
+        },
+      },
+      {
+        src: "chemical-tracking-09.jpg",
+        caption: {
+          en: "Scientist: access request pending (can be cancelled)",
+          de: "Wissenschaftler: Zugriffsanfrage ausstehend (kann storniert werden)",
+        },
+      },
+      {
+        src: "chemical-tracking-10.jpg",
+        caption: {
+          en: "Admin: grant or reject the pending request",
+          de: "Admin: die ausstehende Anfrage genehmigen oder ablehnen",
+        },
+      },
+      {
+        src: "chemical-tracking-11.jpg",
+        caption: {
+          en: "Scientist: access request approved",
+          de: "Wissenschaftler: Zugriffsanfrage genehmigt",
+        },
+      },
+      {
+        src: "chemical-tracking-12.jpg",
+        caption: {
+          en: "Chemical available in the simulator after approval",
+          de: "Nach der Genehmigung ist die Chemikalie im Simulator verfügbar",
+        },
+      },
+      {
+        src: "chemical-tracking-13.jpg",
+        caption: {
+          en: "Scientist: laboratory simulator in light mode",
+          de: "Wissenschaftler: Laborsimulator im hellen Modus",
+        },
+      },
+      {
+        src: "chemical-tracking-14.jpg",
+        caption: {
+          en: "Lab Technician: notifications in light mode",
+          de: "Labortechniker: Benachrichtigungen im hellen Modus",
+        },
+      },
+      {
+        src: "chemical-tracking-15-dispense-demo.mp4",
+        poster: "chemical-tracking-15-poster.jpg",
+        caption: {
+          en: "Video: a scientist dispenses a chemical in the simulator",
+          de: "Video: Ein Wissenschaftler entnimmt eine Chemikalie im Simulator",
+        },
+      },
+    ],
     repo: "https://github.com/Koodali-Sushma/chemical-tracking-system",
     demo: "https://chemical-tracking-system.vercel.app/",
   },
